@@ -1,7 +1,9 @@
 import Image from "next/image";
 
-export default function Page() {
+const Page = () => {
   return (
-    <div className=''></div>
+    <div className=''>This is Dashboard</div>
   );
 }
+
+export default Page;
