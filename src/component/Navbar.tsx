@@ -4,9 +4,13 @@ import {useEffect, useState, Fragment} from "react";
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import {useRouter} from "next/navigation";
+import {useAppSelector} from "@/store";
 
 const Navbar = () => {
     const router = useRouter();
+
+    const [authState, setAuthState] = useState(false); //storing Redux state to normal State for mitigating client/server state mismatch on reload.
+    const reduxAuthState = useAppSelector((state) => state.auth.authState);
     const [
         location,
         setLocation
@@ -39,10 +43,14 @@ const Navbar = () => {
         setCategories(response);
     }
 
-    useEffect(  () => {
+    useEffect(() => {
         fetchLocation();
         fetchCategories();
     }, []);
+
+    useEffect(() => {
+        setAuthState(reduxAuthState);
+    }, [reduxAuthState]);
 
     const handleSearch = () => {
         const searchStr = Buffer.from(JSON.stringify({
@@ -53,9 +61,6 @@ const Navbar = () => {
         router.push(`/product?search=${searchStr}`);
     }
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     // @ts-ignore
     return (
         <nav className='bg-gray-900 flex w-full items-center justify-center space-x-10 py-2'>
@@ -148,7 +153,9 @@ const Navbar = () => {
                         <div className="flex items-center justify-between space-x-5">
                             <a className="menu-hover text-base font-medium text-white lg:mx-4">
                                 <div className="flex flex-col">
-                                    <span className='text-xs text-stone-200'>Hello, Sign in</span>
+                                    <span className='text-xs text-stone-200'>Hello, {
+                                        authState ? 'Vivek' : 'Sign in'
+                                    }</span>
                                     <span className='text-stone-200'>Account</span>
                                 </div>
                             </a>
@@ -164,20 +171,23 @@ const Navbar = () => {
                         </div>
                         <div
                             className="invisible absolute right-0 z-50 flex w-56 flex-col text-center bg-gray-100 py-1 pt-2 px-4 text-gray-800 shadow-xl group-hover:visible">
-                            <div className='mb-2 border-b-2 p-0'>
-                                <a href='#' className="mt-2 block border-b border-gray-100 pt-1 font-semibold text-gray-500 hover:text-black md:mx-2">
-                                    <button type='button'
-                                            className='py-2 px-10 bg-yellow-500 hover:bg-yellow-700 text-white text-sm rounded-xl'
-                                            onClick={() => router.push('/signin')}
-                                    >
-                                        Sign in
-                                    </button>
-                                </a>
-                                <span className='text-xs mb-2'>
-                                    New customer?
-                                    <a href='#' className='text-blue-700' onClick={() => router.push('/signup')}>Start here</a>
-                                </span>
-                            </div>
+                            {
+                                !authState &&
+                                <div className='mb-2 border-b-2 p-0'>
+                                    <a href='#' className="mt-2 block border-b border-gray-100 pt-1 font-semibold text-gray-500 hover:text-black md:mx-2">
+                                        <button type='button'
+                                                className='py-2 px-10 bg-yellow-500 hover:bg-yellow-700 text-white text-sm rounded-xl'
+                                                onClick={() => router.push('/signin')}
+                                        >
+                                            Sign in
+                                        </button>
+                                    </a>
+                                    <span className='text-xs mb-2'>
+                                        New customer?
+                                        <a href='#' className='text-blue-700' onClick={() => router.push('/signup')}>Start here</a>
+                                    </span>
+                                </div>
+                            }
                             <a className="block border-b border-gray-100 py-1 font-semibold text-gray-500 hover:text-black md:mx-2">
                                 Account
                             </a>
