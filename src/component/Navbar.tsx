@@ -65,7 +65,15 @@ const Navbar = () => {
     return (
         <nav className='bg-gray-900 flex w-full items-center justify-center space-x-10 py-2'>
             {/*logo*/}
-            <a href='#' onClick={() => router.push('/')}><h2 className='text-xl text-stone-400 font-bold'>eCommerce</h2></a>
+            <a href='#' onClick={() => router.push('/')}>
+                <div className='flex'>
+                    <img
+                        className="mx-auto h-10 w-auto"
+                        src="/amzlogo3.svg"
+                        alt="Your Company"
+                    />
+                </div>
+            </a>
             {/*location*/}
             <div className="flex flex-col">
                 <span className='text-xs text-stone-200 font-normal'>Delivering to</span>
@@ -159,7 +167,7 @@ const Navbar = () => {
                                     <span className='text-stone-200'>Account</span>
                                 </div>
                             </a>
-                            <div className='' style={{'margin-left': '0px'}}>
+                            <div className='' style={{'marginLeft': '0px'}}>
                                 <span className='text-stone-200'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 3"
                                          strokeWidth="1.5"
@@ -196,7 +204,7 @@ const Navbar = () => {
                 </div>
             </div>
             {/*Order & Return*/}
-            <div className='flex p-0 items-center justify-between space-x-5' style={{ 'margin-left': '15px' }}>
+            <div className='flex p-0 items-center justify-between space-x-5' style={{ 'marginLeft': '15px' }}>
                 <a href='#' className="text-base font-medium text-white lg:mx-4" onClick={() => router.push('/order')}>
                     <div className="flex flex-col">
                         <span className='text-xs text-stone-200'>Returns</span>
@@ -206,12 +214,14 @@ const Navbar = () => {
             </div>
 
             {/*Cart*/}
-            <div className='flex p-0 items-center' style={{ 'margin-left': '20px' }}>
+            <div className='flex p-0 items-center' style={{ 'marginLeft': '20px' }}>
                 <a href='#' className='flex' onClick={() => router.push('/cart')}>
                     <div className='flex flex-col p-0 m-0'>
-                        <span className='text-center text-orange-500 text-xs font-bold' style={{ 'margin': '0 0 0 10px' }}>0</span>
+                        <span className='text-center text-orange-500 text-xs font-bold'
+                              style={{'margin': '0 0 0 10px'}}>0</span>
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink"
-                             data-name="Layer 1" viewBox="0 0 128 128" width="35" height="35" style={{ 'margin-top': '-8px' }}>
+                             data-name="Layer 1" viewBox="0 0 128 128" width="35" height="35"
+                             style={{'marginTop': '-8px'}}>
                             <defs>
                                 <linearGradient id="a" x1="57.791" x2="68.393" y1="100.585" y2="111.187"
                                                 gradientUnits="userSpaceOnUse">
