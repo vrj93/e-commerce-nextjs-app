@@ -1,4 +1,4 @@
-const Password = ({ setPassword, passwordError, setPasswordError }) => {
+const Password = ({ setPassword, passwordError, setPasswordError }: any) => {
     const handlePassword = (e: any) => {
         if (e.target.value != '') {
             setPassword(e.target.value);

@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-const Username = ({ setUser, usernameError, setUsernameError }) => {
+const Username = ({ setUser, usernameError, setUsernameError }: any) => {
 
     const isValidPhone = (phone: string) => {
         if (!isNaN(Number(phone))) {

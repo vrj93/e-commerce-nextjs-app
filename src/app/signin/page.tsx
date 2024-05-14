@@ -1,10 +1,12 @@
 'use client';
 import {useAppDispatch} from "@/store";
-import {setAuthState} from "@/store/authSlice";
+import {setAuthState} from "@/store/auth/authSlice";
 import {useEffect, useRef, useState} from "react";
 import Username from "@/app/signin/username";
 import Password from "@/app/signin/password";
 import {useRouter} from "next/navigation";
+import Image from "next/image";
+import {setUserName} from "@/store/auth/userSlice";
 
 const Page = () => {
     const router = useRouter();
@@ -17,32 +19,44 @@ const Page = () => {
     const [signInEnabled, setSigninEnabled] = useState(false);
     const mountCount = useRef(0);
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
 
+        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/login`;
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user,
+                password,
+            })
+        });
+
+        const response = await res.json();
+
+        if (response.flag) {
+            dispatch(setAuthState(true));
+            dispatch(setUserName(response.data.name));
+            router.push('/');
+        } else {
+            alert('Username or Password is incorrect!');
+        }
     }
 
     useEffect(() => {
-
-    }, []);
-
-    useEffect(() => {
-        if (mountCount.current > 0 && !usernameError && !passwordError) {//Sign in button should remain disabled on initial mount.
+        if (mountCount.current > 1 && !usernameError && !passwordError) {//Sign in button should remain disabled on initial mount.
             setSigninEnabled(true);
         } else {
             setSigninEnabled(false);
         }
         mountCount.current += 1;
-    }, [usernameError, passwordError]);
+    }, [user, password, usernameError, passwordError]);
+
     return (
         <>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
-                        className="mx-auto h-10 w-auto"
-                        src="/amzlogo2.svg"
-                        alt="Your Company"
-                    />
+                    <Image src='/amzlogo2.svg' className="mx-auto h-20 w-auto" alt='AMZ Logo' width={0} height={0} />
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Sign in to your account
                     </h2>
