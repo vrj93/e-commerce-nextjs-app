@@ -1,15 +1,15 @@
 'use client';
 
-import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 
-const ByCategory = () => {
+const ByBrand = () => {
     const router = useRouter();
     const [products, setProducts] = useState([]);
 
-    const handleProductByCategory = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/product-by-category`;
+    const handleProductByBrand = async () => {
+        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/product-by-brand`;
         const res = await fetch(url);
         const response = await res.json();
 
@@ -19,13 +19,13 @@ const ByCategory = () => {
     }
 
     useEffect(() => {
-        handleProductByCategory();
+        handleProductByBrand();
     }, []);
 
     return (
         <div className="bg-white m-12 rounded-2xl">
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-                <h2 className="mb-6 font-bold text-2xl">Popular Products by Category</h2>
+                <h2 className="mb-6 font-bold text-2xl">Popular Products by Brand</h2>
 
                 <div
                     className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 xl:gap-x-8">
@@ -46,15 +46,17 @@ const ByCategory = () => {
                                     />
                                 }
                             </div>
-                            <h3 className="mt-4 font-bold text-sm text-gray-700">{product.category_name}</h3>
+                            <h3 className="mt-4 font-bold text-sm text-gray-700">{product.brand}</h3>
                             <h3 className="text-sm text-gray-700">{product.product_name}</h3>
-                            <p className="mt-1 text-lg font-medium text-gray-900"><span className='text-sm'>&#8377;</span>{product.price}</p>
+                            <p className="mt-1 text-lg font-medium text-gray-900">
+                                <span className='text-sm'>&#8377;</span>{product.price}
+                            </p>
                         </a>
                     ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default ByCategory;
+export default ByBrand;

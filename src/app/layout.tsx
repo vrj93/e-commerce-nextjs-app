@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" className='h-full bg-gray-200'>
+      <html lang="en" className='h-full bg-orange-100'>
         <body className={inter.className} style={{ 'height': '100%' }}>
             <ReduxProvider>
                 <main>
