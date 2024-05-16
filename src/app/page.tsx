@@ -1,7 +1,13 @@
+import ByCategory from "@/app/dashboard/byCategory";
+
 const Page = () => {
   return (
-    <div className=''>This is Dashboard</div>
-  );
+      <>
+          <div>
+              <ByCategory />
+          </div>
+      </>
+  )
 }
 
 export default Page;

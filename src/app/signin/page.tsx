@@ -84,12 +84,6 @@ const Page = () => {
                     </p>
                 </div>
             </div>
-
-            {/*<div className=''>*/}
-            {/*    <h2>This is Sign in Page</h2>*/}
-            {/*    <button onClick={() => dispatch(setAuthState(true))}>Log in</button><br />*/}
-            {/*    <button onClick={() => dispatch(setAuthState(false))}>Log out</button>*/}
-            {/*</div>*/}
         </>
     )
 }
