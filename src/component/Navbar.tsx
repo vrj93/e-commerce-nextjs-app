@@ -26,10 +26,6 @@ const Navbar = () => {
     const [categories, setCategories] = useState([{id: null, name: ''}]);
     const [searchText, setSearchText] = useState('');
 
-    const classNames = (...classes: string[]) => {
-        return classes.filter(Boolean).join(' ')
-    }
-
     const fetchLocation = async () => {
         const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/location`;
         // const url = '';
