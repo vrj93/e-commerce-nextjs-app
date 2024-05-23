@@ -23,7 +23,7 @@ const Navbar = () => {
         setLocation
     ] = useState({city: '', country: ''});
     const [selectedCategory, setSelectedCategory] = useState({id: null, name: ''});
-    const [categories, setCategories] = useState([{id: null, name: ''}]);
+    const [categories, setCategories] = useState([]);
     const [searchText, setSearchText] = useState('');
 
     const fetchLocation = async () => {
@@ -34,7 +34,7 @@ const Navbar = () => {
 
         setLocation({
             city: response.data.city,
-            country: response.data.country
+            country: response.data.country,
         })
     }
 
@@ -43,7 +43,7 @@ const Navbar = () => {
         const res = await fetch(url);
         const response = await res.json();
 
-        setCategories(response);
+        setCategories(response.data);
     }
 
     useEffect(() => {
