@@ -27,8 +27,8 @@ const Navbar = () => {
     const [searchText, setSearchText] = useState('');
 
     const fetchLocation = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/location`;
-        // const url = '';
+        // const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/location`;
+        const url = '';
         const res = await fetch(url);
         const response = await res.json();
 
@@ -57,6 +57,10 @@ const Navbar = () => {
     }, [reduxAuthState, reduxUserNameState]);
 
     const handleSearch = () => {
+        if (!selectedCategory.id) {
+            alert('Please select Category!');
+            return;
+        }
         const searchStr = Buffer.from(JSON.stringify({
             name: searchText,
             categoryId: [selectedCategory.id],
@@ -130,10 +134,10 @@ const Navbar = () => {
                     {/*search bar*/}
                     <div className='items-center'>
                         <input type='text'
-                               name='search'
-                               className='h-10 pl-2 w-96 text-sm'
-                               placeholder='Search Products'
-                               onChange={(e) => setSearchText(e.target.value)}
+                            name='search'
+                            className='h-10 pl-2 w-96 text-sm'
+                            placeholder='Search Products'
+                            onChange={(e) => setSearchText(e.target.value)}
                         />
                     </div>
 
