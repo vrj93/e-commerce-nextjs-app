@@ -18,10 +18,7 @@ const Navbar = () => {
     const [userNameState, setNormalUserNameState] = useState(''); //storing Redux state to normal State for mitigating client/server state mismatch on reload.
     const reduxUserNameState = useAppSelector((state) => state.userName.userNameState);
 
-    const [
-        location,
-        setLocation
-    ] = useState({city: '', country: ''});
+    const [location, setLocation] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState({id: null, name: ''});
     const [categories, setCategories] = useState([]);
     const [searchText, setSearchText] = useState('');
@@ -30,12 +27,11 @@ const Navbar = () => {
         // const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/location`;
         const url = '';
         const res = await fetch(url);
-        const response = await res.json();
-
-        setLocation({
-            city: response.data.city,
-            country: response.data.country,
-        })
+        
+        if (res.status == 200) {
+            const response = await res.json();
+            setLocation(response.data);
+        }
     }
 
     const fetchCategories = async () => {
