@@ -6,10 +6,12 @@ import Product from "./product";
 
 const ProductList = () => {
   const searchParams = useSearchParams();
-  const searchEncoded: any = searchParams.get("search");
-  const searchObj = useMemo(() => {
-    return JSON.parse(Buffer.from(searchEncoded, "base64").toString("utf-8"));
-  }, [searchEncoded]);
+  const selectedCategories = useMemo(() => {
+    return searchParams.get('categories')?.split('_');
+  }, [searchParams.get('categories')]);
+  const searchText = useMemo(() => {
+    return searchParams.get('search');
+  }, [searchParams.get('search')]);
   const [products, setProducts] = useState([]);
   const [colors, setColors] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -29,11 +31,14 @@ const ProductList = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(searchObj),
+      body: JSON.stringify({
+        categories: selectedCategories,
+        search: searchText,
+      }),
     });
     const response = await res.json();
     setProducts(response.data);
-  }, [searchObj]);
+  }, [selectedCategories, searchText]);
 
   const getColors = useCallback(async () => {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/color`;

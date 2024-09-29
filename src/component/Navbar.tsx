@@ -19,7 +19,7 @@ const Navbar = () => {
     const reduxUserNameState = useAppSelector((state) => state.userName.userNameState);
 
     const [location, setLocation] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState({id: null, name: ''});
+    const [selectedCategory, setSelectedCategory] = useState({slug: '', name: ''});
     const [categories, setCategories] = useState([]);
     const [searchText, setSearchText] = useState('');
 
@@ -53,16 +53,13 @@ const Navbar = () => {
     }, [reduxAuthState, reduxUserNameState]);
 
     const handleSearch = () => {
-        if (!selectedCategory.id) {
+        if (selectedCategory.slug === null) {
             alert('Please select Category!');
             return;
         }
-        const searchStr = Buffer.from(JSON.stringify({
-            name: searchText,
-            categoryId: [selectedCategory.id],
-        })).toString('base64');
+        const searchStr = `categories=${selectedCategory.slug}&search=${searchText}`;
 
-        router.push(`/product?search=${searchStr}`);
+        router.push(`/product?${searchStr}`);
     };
 
     return (
@@ -104,15 +101,15 @@ const Navbar = () => {
                                     className="absolute left-0 z-10 w-60 max-h-96 overflow-y-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     <div className="py-1">
                                         {
-                                            categories.map((category, index) => (
+                                            categories.map((category: any, index) => (
                                                 <Menu.Item key={index}>
                                                     {({active}) => (
                                                         <a
                                                             href="#"
                                                             className='text-gray-700 block px-2 text-sm'
                                                             onClick={(e) => setSelectedCategory({
-                                                                id: category.id,
-                                                                name: category.name
+                                                                slug: category.slug,
+                                                                name: category.name,
                                                             })}
                                                         >
                                                             {category.name}
