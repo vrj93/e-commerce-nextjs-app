@@ -7,12 +7,17 @@ import Product from "./product";
 const ProductList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const selectedCategories = useMemo(() => {
     return searchParams.get('categories')?.split('_');
+  }, [searchParams]);
+  const selectedBrands = useMemo(() => {
+    return (searchParams.get('brands') !== null) ? searchParams.get('brands').split('_') : [];
   }, [searchParams]);
   const searchText = useMemo(() => {
     return searchParams.get('search');
   }, [searchParams]);
+
   const [products, setProducts] = useState([]);
   const [colors, setColors]: any = useState([]);
   const [categories, setCategories]: any = useState([]);
@@ -34,12 +39,13 @@ const ProductList = () => {
       },
       body: JSON.stringify({
         categories: selectedCategories,
+        brands: selectedBrands,
         search: searchText,
       }),
     });
     const response = await res.json();
     setProducts(response.data);
-  }, [selectedCategories, searchText]);
+  }, [selectedCategories, selectedBrands, searchText]);
 
   const getColors = useCallback(async () => {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/color`;
@@ -63,13 +69,24 @@ const ProductList = () => {
   }, []);
 
   const toggleCategory = async (e: any, category: string) => {
-    let categories = selectedCategories;
+    let categories: any = selectedCategories;
     if (e.target.checked) {
       categories?.push(category);
     } else {
       categories?.splice(categories.indexOf(category), 1);
     }
-    const searchStr = `categories=${categories.join('_')}&search=${searchText}`;
+    const searchStr = `${categories.length ? 'categories=' + categories?.join('_') : ''}&search=${searchText}`;
+    router.push(`/product?${searchStr}`);
+  }
+
+  const toggleBrand = async (e: any, brand: string) => {
+    let brands: any = selectedBrands;
+    if (e.target.checked) {
+      brands?.push(brand);
+    } else {
+      brands?.splice(brands.indexOf(brand), 1);
+    }
+    const searchStr = `categories=${selectedCategories}${brands.length ? '&brands=' + brands?.join('_') : ''}&search=${searchText}`;
     router.push(`/product?${searchStr}`);
   }
 
@@ -130,7 +147,12 @@ const ProductList = () => {
               brands.slice(0, visibleBrands).map((brand: any, index: number) => (
                 <li key={index}>
                   <label>
-                    <input type="checkbox" className="mr-2" />
+                    <input 
+                      type="checkbox"
+                      className="mr-2"
+                      checked={selectedBrands?.includes(brand.slug) ? true : false} 
+                      onChange={(e) => toggleBrand(e, brand.slug)}
+                    />
                     {brand.name}
                   </label>
                 </li>
