@@ -1,21 +1,22 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Product from "./product";
 
 const ProductList = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const selectedCategories = useMemo(() => {
     return searchParams.get('categories')?.split('_');
-  }, [searchParams.get('categories')]);
+  }, [searchParams]);
   const searchText = useMemo(() => {
     return searchParams.get('search');
-  }, [searchParams.get('search')]);
+  }, [searchParams]);
   const [products, setProducts] = useState([]);
-  const [colors, setColors] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [colors, setColors]: any = useState([]);
+  const [categories, setCategories]: any = useState([]);
+  const [brands, setBrands]: any = useState([]);
   const [visibleColors, setVisibleColors] = useState(5);
   const [visibleCategories, setVisibleCategories] = useState(5);
   const [visibleBrands, setVisibleBrands] = useState(5);
@@ -61,13 +62,23 @@ const ProductList = () => {
     setBrands(response.data);
   }, []);
 
+  const toggleCategory = async (e: any, category: string) => {
+    let categories = selectedCategories;
+    if (e.target.checked) {
+      categories?.push(category);
+    } else {
+      categories?.splice(categories.indexOf(category), 1);
+    }
+    const searchStr = `categories=${categories.join('_')}&search=${searchText}`;
+    router.push(`/product?${searchStr}`);
+  }
+
   useEffect(() => {
     handleSearch();
     getColors();
     getCategory();
     getBrand();
   }, [handleSearch, getColors, getCategory, getBrand]);
-// console.log(products);
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex p-8 bg-white rounded-lg">
@@ -75,7 +86,7 @@ const ProductList = () => {
           <h2 className="text-lg font-medium mb-2">Color</h2>
           <ul>
             {colors &&
-              colors.slice(0, visibleColors).map((color, index) => (
+              colors.slice(0, visibleColors).map((color: any, index: number) => (
                 <li key={index}>
                   <label>
                     <input type="checkbox" className="mr-2" />
@@ -93,10 +104,15 @@ const ProductList = () => {
           <h2 className="text-lg font-medium mt-8 mb-2">Category</h2>
           <ul>
             {categories &&
-              categories.slice(0, visibleCategories).map((category, index) => (
+              categories.slice(0, visibleCategories).map((category: any, index: number) => (
                 <li key={index}>
                   <label>
-                    <input type="checkbox" className="mr-2" />
+                    <input 
+                      type="checkbox" 
+                      className="mr-2"
+                      checked={selectedCategories?.includes(category.slug) ? true : false} 
+                      onChange={(e) => toggleCategory(e, category.slug)}
+                    />
                     {category.name}
                   </label>
                 </li>
@@ -111,7 +127,7 @@ const ProductList = () => {
           <h2 className="text-lg font-medium mt-8 mb-2">Brand</h2>
           <ul>
             {brands &&
-              brands.slice(0, visibleBrands).map((brand, index) => (
+              brands.slice(0, visibleBrands).map((brand: any, index: number) => (
                 <li key={index}>
                   <label>
                     <input type="checkbox" className="mr-2" />

@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 const Product = ({ productStr }: any) => {
   const router = useRouter();
   const product = productStr && JSON.parse(productStr);
-  console.log(product);
-
   const handleProductPage = (productId: any) => {
     const encodedId = Buffer.from(productId.toString()).toString("base64");
     router.push(`/product/${encodedId}`);
