@@ -14,6 +14,9 @@ const ProductList = () => {
   const selectedBrands = useMemo(() => {
     return (searchParams.get('brands') !== null) ? searchParams.get('brands').split('_') : [];
   }, [searchParams]);
+  const selectedColors = useMemo(() => {
+    return searchParams.get('colors') !== null ? searchParams.get('colors').split('_') : [];
+  }, [searchParams]);
   const searchText = useMemo(() => {
     return searchParams.get('search');
   }, [searchParams]);
@@ -40,12 +43,13 @@ const ProductList = () => {
       body: JSON.stringify({
         categories: selectedCategories,
         brands: selectedBrands,
+        colors: selectedColors,
         search: searchText,
       }),
     });
     const response = await res.json();
     setProducts(response.data);
-  }, [selectedCategories, selectedBrands, searchText]);
+  }, [selectedCategories, selectedBrands, selectedColors, searchText]);
 
   const getColors = useCallback(async () => {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/color`;
@@ -75,7 +79,7 @@ const ProductList = () => {
     } else {
       categories?.splice(categories.indexOf(category), 1);
     }
-    const searchStr = `${categories.length ? 'categories=' + categories?.join('_') : ''}${selectedBrands.length ? '&brands=' + selectedBrands?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `${categories && categories.length ? 'categories=' + categories?.join('_') : ''}${selectedBrands && selectedBrands.length ? '&brands=' + selectedBrands?.join('_') : ''}${selectedColors && selectedColors.length ? '&colors=' + selectedColors?.join('_') : ''}&search=${searchText}`;
     router.push(`/product?${searchStr}`);
   }
 
@@ -86,7 +90,18 @@ const ProductList = () => {
     } else {
       brands?.splice(brands.indexOf(brand), 1);
     }
-    const searchStr = `categories=${selectedCategories.length ? selectedCategories?.join('_') : ''}${brands.length ? '&brands=' + brands?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `${selectedCategories && selectedCategories.length ? 'categories=' + selectedCategories?.join('_') : ''}${brands && brands.length ? '&brands=' + brands?.join('_') : ''}${selectedColors && selectedColors.length ? '&colors=' + selectedColors?.join('_') : ''}&search=${searchText}`;
+    router.push(`/product?${searchStr}`);
+  }
+
+  const toggleColor = async (e: any, color: string) => {
+    let colors: any = selectedColors;
+    if (e.target.checked) {
+      colors?.push(color);
+    } else {
+      colors?.splice(colors.indexOf(color), 1);
+    }
+    const searchStr = `${selectedCategories && selectedCategories.length ? 'categories=' + selectedCategories?.join('_') : ''}${selectedBrands && selectedBrands.length ? '&brands=' + selectedBrands?.join('_') : ''}${colors && colors.length ? '&colors=' + colors?.join('_') : ''}&search=${searchText}`;
     router.push(`/product?${searchStr}`);
   }
 
@@ -106,7 +121,12 @@ const ProductList = () => {
               colors.slice(0, visibleColors).map((color: any, index: number) => (
                 <li key={index}>
                   <label>
-                    <input type="checkbox" className="mr-2" />
+                    <input 
+                      type="checkbox" 
+                      className="mr-2" 
+                      checked={selectedColors?.includes(color.name) ? true : false}
+                      onChange={(e) => toggleColor(e, color.name)}
+                    />
                     {color.name}
                   </label>
                 </li>
