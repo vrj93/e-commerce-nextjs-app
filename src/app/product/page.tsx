@@ -75,7 +75,7 @@ const ProductList = () => {
     } else {
       categories?.splice(categories.indexOf(category), 1);
     }
-    const searchStr = `${categories.length ? 'categories=' + categories?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `${categories.length ? 'categories=' + categories?.join('_') : ''}${selectedBrands.length ? '&brands=' + selectedBrands?.join('_') : ''}&search=${searchText}`;
     router.push(`/product?${searchStr}`);
   }
 
@@ -86,7 +86,7 @@ const ProductList = () => {
     } else {
       brands?.splice(brands.indexOf(brand), 1);
     }
-    const searchStr = `categories=${selectedCategories}${brands.length ? '&brands=' + brands?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `categories=${selectedCategories.length ? selectedCategories?.join('_') : ''}${brands.length ? '&brands=' + brands?.join('_') : ''}&search=${searchText}`;
     router.push(`/product?${searchStr}`);
   }
 
