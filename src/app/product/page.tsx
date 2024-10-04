@@ -2,23 +2,32 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Product from "./product";
+import Color from "./filters/color";
+import Category from "./filters/category";
+import Brand from "./filters/brand";
+import Products from "./products";
 
 const ProductList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const selectedCategories = useMemo(() => {
-    return searchParams.get('categories')?.split('_');
+    return searchParams.get("categories") !== null
+      ? searchParams.get("categories").split("_")
+      : [];
   }, [searchParams]);
   const selectedBrands = useMemo(() => {
-    return (searchParams.get('brands') !== null) ? searchParams.get('brands').split('_') : [];
+    return searchParams.get("brands") !== null
+      ? searchParams.get("brands").split("_")
+      : [];
   }, [searchParams]);
   const selectedColors = useMemo(() => {
-    return searchParams.get('colors') !== null ? searchParams.get('colors').split('_') : [];
+    return searchParams.get("colors") !== null
+      ? searchParams.get("colors").split("_")
+      : [];
   }, [searchParams]);
   const searchText = useMemo(() => {
-    return searchParams.get('search');
+    return searchParams.get("search");
   }, [searchParams]);
 
   const [products, setProducts] = useState([]);
@@ -73,37 +82,67 @@ const ProductList = () => {
   }, []);
 
   const toggleCategory = async (e: any, category: string) => {
-    let categories: any = selectedCategories;
+    let categories = [...selectedCategories];
     if (e.target.checked) {
       categories?.push(category);
     } else {
       categories?.splice(categories.indexOf(category), 1);
     }
-    const searchStr = `${categories && categories.length ? 'categories=' + categories?.join('_') : ''}${selectedBrands && selectedBrands.length ? '&brands=' + selectedBrands?.join('_') : ''}${selectedColors && selectedColors.length ? '&colors=' + selectedColors?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `${
+      categories && categories.length
+        ? "categories=" + categories?.join("_")
+        : ""
+    }${
+      selectedBrands && selectedBrands.length
+        ? "&brands=" + selectedBrands?.join("_")
+        : ""
+    }${
+      selectedColors && selectedColors.length
+        ? "&colors=" + selectedColors?.join("_")
+        : ""
+    }&search=${searchText}`;
     router.push(`/product?${searchStr}`);
-  }
+  };
 
   const toggleBrand = async (e: any, brand: string) => {
-    let brands: any = selectedBrands;
+    let brands = [...selectedBrands];
     if (e.target.checked) {
       brands?.push(brand);
     } else {
       brands?.splice(brands.indexOf(brand), 1);
     }
-    const searchStr = `${selectedCategories && selectedCategories.length ? 'categories=' + selectedCategories?.join('_') : ''}${brands && brands.length ? '&brands=' + brands?.join('_') : ''}${selectedColors && selectedColors.length ? '&colors=' + selectedColors?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `${
+      selectedCategories && selectedCategories.length
+        ? "categories=" + selectedCategories?.join("_")
+        : ""
+    }${brands && brands.length ? "&brands=" + brands?.join("_") : ""}${
+      selectedColors && selectedColors.length
+        ? "&colors=" + selectedColors?.join("_")
+        : ""
+    }&search=${searchText}`;
     router.push(`/product?${searchStr}`);
-  }
+  };
 
   const toggleColor = async (e: any, color: string) => {
-    let colors: any = selectedColors;
+    let colors = [...selectedColors];
     if (e.target.checked) {
       colors?.push(color);
     } else {
       colors?.splice(colors.indexOf(color), 1);
     }
-    const searchStr = `${selectedCategories && selectedCategories.length ? 'categories=' + selectedCategories?.join('_') : ''}${selectedBrands && selectedBrands.length ? '&brands=' + selectedBrands?.join('_') : ''}${colors && colors.length ? '&colors=' + colors?.join('_') : ''}&search=${searchText}`;
+    const searchStr = `${
+      selectedCategories && selectedCategories.length
+        ? "categories=" + selectedCategories?.join("_")
+        : ""
+    }${
+      selectedBrands && selectedBrands.length
+        ? "&brands=" + selectedBrands?.join("_")
+        : ""
+    }${
+      colors && colors.length ? "&colors=" + colors?.join("_") : ""
+    }&search=${searchText}`;
     router.push(`/product?${searchStr}`);
-  }
+  };
 
   useEffect(() => {
     handleSearch();
@@ -111,85 +150,35 @@ const ProductList = () => {
     getCategory();
     getBrand();
   }, [handleSearch, getColors, getCategory, getBrand]);
+  
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex p-8 bg-white rounded-lg">
         <aside className="w-1/4 pr-4">
-          <h2 className="text-lg font-medium mb-2">Color</h2>
-          <ul>
-            {colors &&
-              colors.slice(0, visibleColors).map((color: any, index: number) => (
-                <li key={index}>
-                  <label>
-                    <input 
-                      type="checkbox" 
-                      className="mr-2" 
-                      checked={selectedColors?.includes(color.name) ? true : false}
-                      onChange={(e) => toggleColor(e, color.name)}
-                    />
-                    {color.name}
-                  </label>
-                </li>
-              ))}
-          </ul>
-          {colors && colors.length > visibleColors && (
-            <button onClick={showMoreColors} className="text-blue-500">
-              See More
-            </button>
-          )}
-
-          <h2 className="text-lg font-medium mt-8 mb-2">Category</h2>
-          <ul>
-            {categories &&
-              categories.slice(0, visibleCategories).map((category: any, index: number) => (
-                <li key={index}>
-                  <label>
-                    <input 
-                      type="checkbox" 
-                      className="mr-2"
-                      checked={selectedCategories?.includes(category.slug) ? true : false} 
-                      onChange={(e) => toggleCategory(e, category.slug)}
-                    />
-                    {category.name}
-                  </label>
-                </li>
-              ))}
-          </ul>
-          {categories && categories.length > visibleCategories && (
-            <button onClick={showMoreCategories} className="text-blue-500">
-              See More
-            </button>
-          )}
-
-          <h2 className="text-lg font-medium mt-8 mb-2">Brand</h2>
-          <ul>
-            {brands &&
-              brands.slice(0, visibleBrands).map((brand: any, index: number) => (
-                <li key={index}>
-                  <label>
-                    <input 
-                      type="checkbox"
-                      className="mr-2"
-                      checked={selectedBrands?.includes(brand.slug) ? true : false} 
-                      onChange={(e) => toggleBrand(e, brand.slug)}
-                    />
-                    {brand.name}
-                  </label>
-                </li>
-              ))}
-          </ul>
-          {brands && brands.length > visibleBrands && (
-            <button onClick={showMoreBrands} className="text-blue-500">
-              See More
-            </button>
-          )}
+          <Color
+            colors={colors}
+            visibleColors={visibleColors}
+            selectedColors={selectedColors}
+            toggleColor={toggleColor}
+            showMoreColors={showMoreColors}
+          />
+          <Category
+            categories={categories}
+            visibleCategories={visibleCategories}
+            selectedCategories={selectedCategories}
+            toggleCategory={toggleCategory}
+            showMoreCategories={showMoreCategories}
+          />
+          <Brand
+            brands={brands}
+            visibleBrands={visibleBrands}
+            selectedBrands={selectedBrands}
+            toggleBrand={toggleBrand}
+            showMoreBrands={showMoreBrands}
+          />
         </aside>
         <div className="w-3/4">
-          <main className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product, index) => (
-              <Product key={index} productStr={JSON.stringify(product)} />
-            ))}
-          </main>
+          <Products products={products} />
         </div>
       </div>
     </div>
