@@ -18,6 +18,11 @@ const ByBrand = () => {
         }
     }
 
+    const handleProductPage = (productId: any) => {
+        const encodedId = Buffer.from(productId.toString()).toString('base64');
+        router.push(`/product/${encodedId}`)
+    }
+
     useEffect(() => {
         handleProductByBrand();
     }, []);
@@ -34,7 +39,7 @@ const ByBrand = () => {
                                 <a
                                     key={product.product_id}
                                     href="#"
-                                    onClick={() => router.push(`/product/${product.product_id}`)}
+                                    onClick={() => handleProductPage(product.product_id)}
                                     className="min-w-[18%] group"
                                 >
                                     <div
