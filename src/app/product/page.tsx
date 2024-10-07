@@ -150,11 +150,11 @@ const ProductList = () => {
     getCategory();
     getBrand();
   }, [handleSearch, getColors, getCategory, getBrand]);
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex p-8 bg-white rounded-lg">
-        <aside className="w-1/4 pr-4">
+      <div className="flex flex-col lg:flex-row p-4 lg:p-8 bg-white rounded-lg">
+        <aside className="w-full lg:w-1/4 mb-4 lg:mb-0 lg:pr-4">
           <Color
             colors={colors}
             visibleColors={visibleColors}
@@ -177,7 +177,7 @@ const ProductList = () => {
             showMoreBrands={showMoreBrands}
           />
         </aside>
-        <div className="w-3/4">
+        <div className="w-full lg:w-3/4">
           <Products products={products} />
         </div>
       </div>
