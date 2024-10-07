@@ -10,7 +10,7 @@ import ProductAbout from "./productAbout";
 
 const Product = ({ params }: { params: { productId: any } }) => {
   const [product, setProduct]: any = useState([]);
-  const [selectedColorId, setSelectedColorId]: any = useState([]);
+  const [selectedColorId, setSelectedColorId]: any = useState(null);
 
   const productIdDecoded = useMemo(
     () =>
@@ -34,13 +34,20 @@ const Product = ({ params }: { params: { productId: any } }) => {
 
   return (
     <>
-      <div className="container mx-auto">
-        <div className="flex flex-wrap md:flex-nowrap mx-4 md:mx-16 p-3 md:p-6 bg-white">
-          <ProductImages />
-          <div className="flex w-full md:w-2/3">
-            <div className="w-2/3">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row w-full p-3 md:p-6 bg-white">
+          {/* Product Images Section */}
+          <div className="w-full md:w-1/3 mb-4 md:mb-0 flex items-center justify-center bg-blend-soft-light">
+            <ProductImages images={product.image} />
+          </div>
+
+          {/* Product Info Section */}
+          <div className="w-full md:w-2/3 flex flex-col md:flex-row">
+            <div className="w-full md:w-2/3">
               <ProductTitle product={product} />
               <ProductPrice price={product.price} />
+
+              {/* Product Details */}
               <div className="w-full my-4 py-2 border-b border-gray-300">
                 {product?.colors && (
                   <ProductColors
@@ -50,10 +57,14 @@ const Product = ({ params }: { params: { productId: any } }) => {
                   />
                 )}
                 <ProductBrandCatMnf product={product} />
-                {product?.description && <ProductAbout description={product?.description} />}
+                {product?.description && (
+                  <ProductAbout description={product?.description} />
+                )}
               </div>
             </div>
-            <div className="w-1/3 m-2 h-7 bg-pink-300"></div>
+
+            {/* Right Sidebar or Additional Information */}
+            <div className="w-full md:w-1/3 h-7 bg-pink-300"></div>
           </div>
         </div>
       </div>
