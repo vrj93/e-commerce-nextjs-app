@@ -16,16 +16,13 @@ import fetchCategories from "./utils/fetchCategories";
 
 const Navbar = () => {
   const router = useRouter();
-
   //Redux state -> Normal State (State mismatch on Client/Server).
   const [authState, setNormalAuthState] = useState(false);
   const [userNameState, setNormalUserNameState] = useState("");
-
   const reduxAuthState = useAppSelector((state) => state.auth.authState);
   const reduxUserNameState = useAppSelector(
     (state) => state.userName.userNameState
   );
-
   const [location, setLocation] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     slug: "",

@@ -6,6 +6,13 @@ import Color from "./filters/color";
 import Category from "./filters/category";
 import Brand from "./filters/brand";
 import Products from "./products";
+import productFilter from "./utils/productFilter";
+import productCategories from "./utils/productCategories";
+import productBrands from "./utils/productBrands";
+import productColors from "./utils/productColors";
+import handleToggleCategory from "./utils/handleToggleCategory";
+import handleToggleBrand from "./utils/handleToggleBrand";
+import handleToggleColor from "./utils/handleToggleColor";
 
 const ProductList = () => {
   const router = useRouter();
@@ -27,7 +34,7 @@ const ProductList = () => {
       : [];
   }, [searchParams]);
   const searchText = useMemo(() => {
-    return searchParams.get("search");
+    return searchParams.get("search") ?? "";
   }, [searchParams]);
 
   const [products, setProducts] = useState([]);
@@ -38,110 +45,62 @@ const ProductList = () => {
   const [visibleCategories, setVisibleCategories] = useState(5);
   const [visibleBrands, setVisibleBrands] = useState(5);
 
-  const showMoreColors = () => setVisibleColors(colors.length);
-  const showMoreCategories = () => setVisibleCategories(categories.length);
-  const showMoreBrands = () => setVisibleBrands(brands.length);
-
   const handleSearch = useCallback(async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/filter`;
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        categories: selectedCategories,
-        brands: selectedBrands,
-        colors: selectedColors,
-        search: searchText,
-      }),
-    });
-    const response = await res.json();
-    setProducts(response.data);
+    const data = await productFilter(
+      selectedCategories,
+      selectedBrands,
+      selectedColors,
+      searchText
+    );
+    setProducts(data);
   }, [selectedCategories, selectedBrands, selectedColors, searchText]);
 
   const getColors = useCallback(async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/color`;
-    const res = await fetch(url);
-    const response = await res.json();
-    setColors(response.data);
+    setColors(await productColors());
   }, []);
 
   const getCategory = useCallback(async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/category`;
-    const res = await fetch(url);
-    const response = await res.json();
-    setCategories(response.data);
+    setCategories(await productCategories());
   }, []);
 
   const getBrand = useCallback(async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/brand`;
-    const res = await fetch(url);
-    const response = await res.json();
-    setBrands(response.data);
+    setBrands(await productBrands());
   }, []);
 
+  const toggleColor = async (e: any, color: string) => {
+    handleToggleColor(
+      e.target.checked,
+      color,
+      selectedColors,
+      selectedCategories,
+      selectedBrands,
+      searchText,
+      router
+    );
+  };
+
   const toggleCategory = async (e: any, category: string) => {
-    let categories = [...selectedCategories];
-    if (e.target.checked) {
-      categories?.push(category);
-    } else {
-      categories?.splice(categories.indexOf(category), 1);
-    }
-    const searchStr = `${
-      categories && categories.length
-        ? "categories=" + categories?.join("_")
-        : ""
-    }${
-      selectedBrands && selectedBrands.length
-        ? "&brands=" + selectedBrands?.join("_")
-        : ""
-    }${
-      selectedColors && selectedColors.length
-        ? "&colors=" + selectedColors?.join("_")
-        : ""
-    }&search=${searchText}`;
-    router.push(`/product?${searchStr}`);
+    handleToggleCategory(
+      e.target.checked,
+      category,
+      selectedCategories,
+      selectedBrands,
+      selectedColors,
+      searchText,
+      router
+    );
   };
 
   const toggleBrand = async (e: any, brand: string) => {
-    let brands = [...selectedBrands];
-    if (e.target.checked) {
-      brands?.push(brand);
-    } else {
-      brands?.splice(brands.indexOf(brand), 1);
-    }
-    const searchStr = `${
-      selectedCategories && selectedCategories.length
-        ? "categories=" + selectedCategories?.join("_")
-        : ""
-    }${brands && brands.length ? "&brands=" + brands?.join("_") : ""}${
-      selectedColors && selectedColors.length
-        ? "&colors=" + selectedColors?.join("_")
-        : ""
-    }&search=${searchText}`;
-    router.push(`/product?${searchStr}`);
-  };
-
-  const toggleColor = async (e: any, color: string) => {
-    let colors = [...selectedColors];
-    if (e.target.checked) {
-      colors?.push(color);
-    } else {
-      colors?.splice(colors.indexOf(color), 1);
-    }
-    const searchStr = `${
-      selectedCategories && selectedCategories.length
-        ? "categories=" + selectedCategories?.join("_")
-        : ""
-    }${
-      selectedBrands && selectedBrands.length
-        ? "&brands=" + selectedBrands?.join("_")
-        : ""
-    }${
-      colors && colors.length ? "&colors=" + colors?.join("_") : ""
-    }&search=${searchText}`;
-    router.push(`/product?${searchStr}`);
+    handleToggleBrand(
+      e.target.checked,
+      brand,
+      selectedBrands,
+      selectedCategories,
+      selectedColors,
+      searchText,
+      router
+    );
   };
 
   useEffect(() => {
@@ -160,21 +119,21 @@ const ProductList = () => {
             visibleColors={visibleColors}
             selectedColors={selectedColors}
             toggleColor={toggleColor}
-            showMoreColors={showMoreColors}
+            showMoreColors={() => setVisibleColors(colors.length)}
           />
           <Category
             categories={categories}
             visibleCategories={visibleCategories}
             selectedCategories={selectedCategories}
             toggleCategory={toggleCategory}
-            showMoreCategories={showMoreCategories}
+            showMoreCategories={() => setVisibleCategories(categories.length)}
           />
           <Brand
             brands={brands}
             visibleBrands={visibleBrands}
             selectedBrands={selectedBrands}
             toggleBrand={toggleBrand}
-            showMoreBrands={showMoreBrands}
+            showMoreBrands={() => setVisibleBrands(brands.length)}
           />
         </aside>
         <div className="w-full lg:w-3/4">

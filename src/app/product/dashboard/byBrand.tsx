@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import handleProductByBrand from "./utils/handleProductByBrand";
-import handleProductPage from "./utils/handleProductPage";
+import handleProductByBrand from "../utils/handleProductByBrand";
+import handleProductPage from "../utils/handleProductPage";
 
 const ByBrand = () => {
   const router = useRouter();
