@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { setUserName } from "@/store/auth/userSlice";
 import handleLogin from "./utils/handleLogin";
+import Link from "next/link";
 
 const Page = () => {
   const router = useRouter();
@@ -88,13 +89,12 @@ const Page = () => {
         </form>
         <p className="mt-6 text-center text-sm text-gray-500">
           Not a member?{" "}
-          <a
-            href="#"
+          <Link
+            href='signup'
             className="font-semibold text-indigo-600 hover:text-indigo-500"
-            onClick={() => router.push("/signup")}
           >
             Start here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

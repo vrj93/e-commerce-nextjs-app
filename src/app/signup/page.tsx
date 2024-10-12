@@ -5,23 +5,33 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Phone from "./phone";
 import Email from "./email";
+import Name from "./name";
+import Link from "next/link";
 
 const Page = () => {
   const router = useRouter();
   const [user, setUser] = useState<{
+    firstName: string;
+    lastName: string;
     phone: string;
     email: string;
     password: string;
   }>({
+    firstName: "",
+    lastName: "",
     phone: "",
     email: "",
     password: "",
   });
   const [userError, setUserError] = useState<{
+    firstNameError: boolean;
+    lastNameError: boolean;
     phoneError: boolean;
     emailError: boolean;
     passwordError: boolean;
   }>({
+    firstNameError: false,
+    lastNameError: false,
     phoneError: false,
     emailError: false,
     passwordError: false,
@@ -30,13 +40,16 @@ const Page = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
   };
 
   useEffect(() => {
     if (
+      user.firstName !== "" &&
+      user.lastName !== "" &&
       user.phone !== "" &&
       user.password !== "" &&
+      !userError.firstNameError &&
+      !userError.lastNameError &&
       !userError.phoneError &&
       !userError.emailError &&
       !userError.passwordError
@@ -48,26 +61,34 @@ const Page = () => {
   }, [user, userError]);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
+    <div className="flex min-h-full flex-1 flex-col px-4 py-4 sm:px-6 lg:px-8">
+      <div className="flex mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md justify-center">
+        <h2 className="mt-4 text-xl font-bold sm:text-2xl sm:leading-9 text-gray-900">
+          Create
+        </h2>
         <Image
           src="/amzlogo2.svg"
-          className="mx-auto h-16 w-auto sm:h-20"
+          className="mx-4 h-10 w-auto sm:h-14"
           alt="AMZ Logo"
           width={0}
           height={0}
         />
-        <h2 className="mt-6 text-center text-xl font-bold leading-7 sm:text-2xl sm:leading-9 text-gray-900">
-          Create AMZ account
+        <h2 className="mt-4 text-xl font-bold sm:text-2xl sm:leading-9 text-gray-900">
+          account
         </h2>
       </div>
-      <div className="mt-8 mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md">
+      <div className="mt-6 mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md justify-center">
         <form
           className="space-y-6"
           action="#"
           method="POST"
           onSubmit={handleSubmit}
         >
+          <Name
+            setUser={setUser}
+            userError={userError}
+            setUserError={setUserError}
+          />
           <Phone
             setUser={setUser}
             userError={userError}
@@ -83,26 +104,27 @@ const Page = () => {
             userError={userError}
             setUserError={setUserError}
           />
-          <button
-            type="submit"
-            className={`flex w-full justify-center rounded-md bg-yellow-500 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 ${
-              !signUpEnabled && "opacity-50"
-            }`}
-            disabled={!signUpEnabled}
-          >
-            Create Account
-          </button>
+          <div className="flex w-full justify-between items-center">
+            <button
+              type="submit"
+              className={`flex w-1/2 justify-center rounded-full bg-yellow-500 px-3 py-2 text-md font-semibold leading-6 text-white shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 ${
+                !signUpEnabled && "opacity-50"
+              }`}
+              disabled={!signUpEnabled}
+            >
+              Create Account
+            </button>
+            <p className="text-sm text-gray-500">
+              Already a member?{" "}
+              <Link
+                href="/signin"
+                className="font-semibold text-indigo-600 hover:text-indigo-500"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
         </form>
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Already a member?{" "}
-          <a
-            href="#"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-            onClick={() => router.push("/signin")}
-          >
-            Sign in
-          </a>
-        </p>
       </div>
     </div>
   );

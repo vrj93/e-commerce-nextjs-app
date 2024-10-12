@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import handleProductByCategory from "../utils/handleProductByCategory";
-import handleProductPage from "../utils/handleProductPage";
+import Link from "next/link";
 
 const ByCategory = () => {
-  const router = useRouter();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -24,10 +22,9 @@ const ByCategory = () => {
           <div className="overflow-x-auto no-scrollbar">
             <div className="flex space-x-8">
               {products.map((product: any) => (
-                <a
+                <Link
                   key={product.product_id}
-                  href="#"
-                  onClick={() => handleProductPage(router, product.product_id)}
+                  href={`/product/${Buffer.from(product.product_id.toString()).toString("base64")}`}
                   className="min-w-[18%] group"
                 >
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-800 xl:aspect-h-8 xl:aspect-w-7">
@@ -52,7 +49,7 @@ const ByCategory = () => {
                     <span className="text-sm">&#8377;</span>
                     {product.price}
                   </p>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
