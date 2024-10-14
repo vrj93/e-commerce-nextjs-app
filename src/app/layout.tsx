@@ -17,15 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" className='h-full bg-orange-100'>
-        <body className={inter.className} style={{ 'height': '100%' }}>
-            <ReduxProvider>
-                <main>
-                    <Navbar />
-                    {children}
-                </main>
-            </ReduxProvider>
-        </body>
-      </html>
+    <html lang="en" className="h-full bg-orange-100">
+      <body className={inter.className} style={{ height: "100%" }}>
+        <ReduxProvider>
+          <main>
+            <Navbar />
+            <div className="w-full justify-center">{children}</div>
+          </main>
+        </ReduxProvider>
+      </body>
+    </html>
   );
 }
