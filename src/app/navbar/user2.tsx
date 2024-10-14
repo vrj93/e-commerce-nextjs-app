@@ -24,7 +24,7 @@ const User2 = ({ authState, setAuthState }: any) => {
             New customer?
             <Link
               href='/signup'
-              className="text-blue-700"
+              className="text-blue-700 ml-1"
             >
               Start here
             </Link>

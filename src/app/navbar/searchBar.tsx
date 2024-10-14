@@ -1,10 +1,10 @@
 const SearchBar = ({ setSearchText }: any) => {
   return (
-    <div className="items-center">
+    <div className="flex-grow w-auto h-full items-center">
       <input
         type="text"
         name="search"
-        className="h-10 pl-2 w-96 text-sm"
+        className="pl-2 text-sm w-full h-full rounded-l-md md:rounded-none lg:rounded-none"
         placeholder="Search Products"
         onChange={(e) => setSearchText(e.target.value)}
       />

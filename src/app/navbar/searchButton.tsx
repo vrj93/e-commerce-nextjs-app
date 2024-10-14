@@ -1,9 +1,9 @@
 const SearchButton = ({ handleSearch }: any) => {
   return (
-    <div className="flex items-center">
+    <div className="flex w-auto h-full items-center">
       <button
         type="submit"
-        className="absolute p-3 text-sm font-medium text-white bg-yellow-500 rounded-e-md hover:bg-yellow-700 focus:ring-2 focus:outline-none focus:ring-yellow-200 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-700"
+        className="p-3 text-sm font-medium text-white bg-yellow-500 rounded-e-md hover:bg-yellow-700 focus:ring-2 focus:outline-none focus:ring-yellow-200 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-700"
         onClick={handleSearch}
       >
         <svg

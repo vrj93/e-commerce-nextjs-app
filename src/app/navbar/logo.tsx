@@ -3,13 +3,13 @@ import Link from "next/link";
 
 const Logo = ({}) => {
   return (
-    <Link href="/">
+    <Link href="/" className="inline-block order-1 ml-2 md:ml-0 lg:ml-0 items-center">
       <Image
-        className="mx-auto h-10 w-auto"
+        className=""
         src="/amzlogo4.svg"
         alt="AMZ"
-        width={0}
-        height={0}
+        width={40}
+        height={40}
       />
     </Link>
   );
