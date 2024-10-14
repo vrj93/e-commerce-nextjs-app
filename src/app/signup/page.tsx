@@ -61,23 +61,20 @@ const Page = () => {
   }, [user, userError]);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col px-4 py-4 sm:px-6 lg:px-8">
-      <div className="flex mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md justify-center">
-        <h2 className="mt-4 text-xl font-bold sm:text-2xl sm:leading-9 text-gray-900">
-          Create
-        </h2>
+    <div className="flex w-2/3 flex-1 ml-52 mr-auto px-4 py-4 sm:px-6 lg:px-8 justify-center items-center">
+      <div className="flex flex-col w-full h-auto mx-auto mt-40 max-w-xs sm:max-w-sm lg:max-w-md justify-center self-start">
         <Image
           src="/amzlogo2.svg"
-          className="mx-4 h-10 w-auto sm:h-14"
+          className="h-15 w-auto md:h-24 sm:h-16"
           alt="AMZ Logo"
           width={0}
           height={0}
         />
-        <h2 className="mt-4 text-xl font-bold sm:text-2xl sm:leading-9 text-gray-900">
-          account
+        <h2 className="mt-4 text-xl text-center font-bold md:text-3xl sm:text-2xl sm:leading-9 text-gray-900">
+          Create Account
         </h2>
       </div>
-      <div className="mt-6 mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-md justify-center">
+      <div className="w-full mx-auto mt-6 max-w-xs sm:max-w-sm lg:max-w-md justify-center">
         <form
           className="space-y-6"
           action="#"
