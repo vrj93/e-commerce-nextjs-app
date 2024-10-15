@@ -13,9 +13,11 @@ import Order from "./order";
 import Cart from "./cart";
 import fetchLocation from "./utils/fetchLocation";
 import fetchCategories from "./utils/fetchCategories";
+import { useMediaQuery } from "react-responsive";
 
 const Navbar = () => {
   const router = useRouter();
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   //Redux state -> Normal State (State mismatch on Client/Server).
   const [authState, setNormalAuthState] = useState(false);
   const [userNameState, setNormalUserNameState] = useState("");
@@ -24,19 +26,19 @@ const Navbar = () => {
     (state) => state.userName.userNameState
   );
   const [location, setLocation] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState({
-    slug: "",
-    name: "",
+  const [selectedCategory, setSelectedCategory] = useState<{ slug: null | string, name: null | string }>({
+    slug: null,
+    name: null,
   });
   const [categories, setCategories] = useState([]);
   const [searchText, setSearchText] = useState("");
 
   const handleSearch = () => {
-    if (selectedCategory.slug === null) {
+    if (!isMobile && selectedCategory.slug === null) {
       alert("Please select Category!");
       return;
     }
-    const searchStr = `categories=${selectedCategory.slug}&search=${searchText}`;
+    const searchStr = `${!isMobile ? 'categories=' + selectedCategory.slug : ''}&search=${searchText}`;
     router.push(`/product?${searchStr}`);
   };
 
