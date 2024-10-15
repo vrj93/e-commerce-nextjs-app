@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full bg-orange-100">
-      <body className={inter.className} style={{ height: "100%" }}>
+      <body className={inter.className}>
         <ReduxProvider>
           <main>
             <Navbar />

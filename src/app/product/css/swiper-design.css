@@ -1,0 +1,35 @@
+/* Custom arrow styles */
+.by-category-swiper-prev,
+.by-category-swiper-next,
+.by-brand-swiper-prev,
+.by-brand-swiper-next {
+  color: #fff; /* Change arrow color */
+  border-radius: 50%; /* Make it circular */
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10; /* Make sure it's above the slides */
+  opacity: 0; 
+}
+
+@media (min-width: 768px) {
+  .by-category-swiper-prev,
+  .by-category-swiper-next,
+  .by-brand-swiper-prev,
+  .by-brand-swiper-next {
+    width: auto;
+    height: auto;
+    opacity: 1;
+  }
+}
+
+/* Hover effect */
+.by-category-swiper-prev:hover,
+.by-category-swiper-next:hover,
+.by-brand-swiper-prev:hover,
+.by-brand-swiper-next:hover {
+  background-color: rgba(0, 0, 0, 0.5); /* Darken on hover */
+}

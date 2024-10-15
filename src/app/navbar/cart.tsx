@@ -2,12 +2,10 @@ import Link from "next/link";
 
 const Cart = () => {
   return (
-    <div className="flex items-center">
-      <Link href="/cart" className="flex">
-        <div className="flex flex-col">
-          <span
-            className="text-center text-orange-500 text-xs font-bold ml-2"
-          >
+    <>
+      <Link href="/cart" className="flex items-center">
+        <div className="flex flex-col mr-2 md:mr-0 lg:mr-0">
+          <span className="text-center text-orange-500 text-xs font-bold ml-2">
             0
           </span>
           <svg
@@ -174,9 +172,11 @@ const Cart = () => {
             ></path>
           </svg>
         </div>
-        <span className="text-center text-stone-200 pt-4 hidden md:block lg:block">Cart</span>
+        <span className="text-center text-stone-200 pt-4 hidden md:block lg:block">
+          Cart
+        </span>
       </Link>
-    </div>
+    </>
   );
 };
 

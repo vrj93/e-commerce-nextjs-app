@@ -3,12 +3,10 @@ import ByBrand from "@/app/product/dashboard/byBrand";
 
 const Page = () => {
   return (
-    <>
-      <div>
-        <ByCategory />
-        <ByBrand />
-      </div>
-    </>
+    <div className="flex flex-col w-full">
+      <ByCategory />
+      <ByBrand />
+    </div>
   );
 };
 
