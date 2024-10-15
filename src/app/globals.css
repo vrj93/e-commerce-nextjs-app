@@ -31,3 +31,7 @@
 /*    text-wrap: balance;*/
 /*  }*/
 /*}*/
+
+html, body {
+  min-width: 320px;
+}
