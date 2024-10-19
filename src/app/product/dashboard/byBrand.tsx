@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Image from "next/image";
 import handleProductByBrand from "../utils/handleProductByBrand";
 import Link from "next/link";
@@ -58,28 +58,28 @@ const ByBrand = () => {
           }}
         >
           {products.map((product: any, index: number) => (
-            <SwiperSlide key={index} className="p-1 rounded-lg bg-purple-200">
+            <SwiperSlide key={index} className="rounded-lg bg-purple-200">
               <Link
                 key={product.product_id}
                 href={`/product/${Buffer.from(
                   product.product_id.toString()
                 ).toString("base64")}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="min-w-[18%] group"
               >
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-lg">
-                  {product.image && (
-                    <Image
-                      src={product.image[0]}
-                      alt=""
-                      className="h-full w-full object-cover object-center group-hover:opacity-75"
-                      width={0}
-                      height={0}
-                      layout="responsive"
-                    />
-                  )}
+                  <Image
+                    src={
+                      product.image ? product.image[0] : "/no-image-found.webp"
+                    }
+                    alt=""
+                    className="h-full w-full object-cover object-center group-hover:opacity-75"
+                    fill
+                  />
                 </div>
-                <div className="px-2">
-                  <h3 className="mt-4 font-bold text-sm text-gray-700">
+                <div className="p-2">
+                  <h3 className="font-bold text-sm text-gray-700">
                     {product.brand}
                   </h3>
                   <h3 className="text-sm text-gray-700">
@@ -110,4 +110,4 @@ const ByBrand = () => {
   );
 };
 
-export default ByBrand;
+export default memo(ByBrand);

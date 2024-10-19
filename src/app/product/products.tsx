@@ -1,12 +1,17 @@
+import { useContext } from "react";
 import Product from "./product";
+import { FilterContext } from "./context/filterContext";
 
-const Products = ({ products }: any) => {
+const Products = () => {
+  const { products } = useContext(FilterContext);
   return (
-    <main className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {products.map((product: any, index: number) => (
-        <Product key={index} productStr={JSON.stringify(product)} />
-      ))}
-    </main>
+    <div className="w-full md:w-[80%] lg:w-[80%] p-2">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-4 md:gap-x-6 md:gap-y-8 lg:gap-x-6 lg:gap-y-8">
+        {products.map((product: any, index: number) => (
+          <Product key={index} productStr={JSON.stringify(product)} />
+        ))}
+      </div>
+    </div>
   );
 };
 

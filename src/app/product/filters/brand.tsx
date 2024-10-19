@@ -1,13 +1,35 @@
-const Brand = ({
-  brands,
-  visibleBrands,
-  selectedBrands,
-  toggleBrand,
-  showMoreBrands,
-}: any) => {
+import { useRouter } from "next/navigation";
+import handleToggleBrand from "../utils/handleToggleBrand";
+import { useContext } from "react";
+import { FilterContext } from "../context/filterContext";
+
+const Brand = () => {
+  const router = useRouter();
+  const {
+    brands,
+    visibleBrands,
+    selectedBrands,
+    selectedCategories,
+    selectedColors,
+    searchText,
+    setVisibleBrands,
+  } = useContext(FilterContext);
+
+  const toggleBrand = async (e: any, brand: string) => {
+    handleToggleBrand(
+      e.target.checked,
+      brand,
+      selectedBrands,
+      selectedCategories,
+      selectedColors,
+      searchText,
+      router
+    );
+  };
+
   return (
     <div className="w-full">
-      <h2 className="text-lg font-medium mt-8 mb-2">Brand</h2>
+      <h2 className="text-lg font-semibold mb-1">Brand</h2>
       <ul>
         {brands &&
           brands.slice(0, visibleBrands).map((brand: any, index: number) => (
@@ -25,7 +47,10 @@ const Brand = ({
           ))}
       </ul>
       {brands && brands.length > visibleBrands && (
-        <button onClick={showMoreBrands} className="text-blue-500">
+        <button
+          onClick={() => setVisibleBrands(brands.length)}
+          className="text-blue-500"
+        >
           See More
         </button>
       )}
