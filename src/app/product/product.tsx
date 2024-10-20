@@ -5,20 +5,20 @@ import Link from "next/link";
 
 const Product = ({ productStr }: any) => {
   const product = productStr && JSON.parse(productStr);
-
+  const productDecode = Buffer.from(product.id.toString()).toString("base64"); 
   return (
     <Link
       key={product.id}
-      href={`product/${Buffer.from(product.id.toString()).toString("base64")}`}
+      href={`product/${productDecode}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="min-w-[18%] group"
+      className="min-w-[18%] group hover:shadow-lg hover:shadow-gray-400 rounded-md"
     >
-      <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md xl:aspect-h-8 xl:aspect-w-6">
+      <div className="aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-md">
         <Image
           src={product.image ? product.image[0] : "/no-image-found.webp"}
           alt=""
-          className="h-full w-full object-cover object-center group-hover:opacity-75"
+          className="h-full w-full object-cover object-center group-hover:opacity-90"
           fill
         />
       </div>

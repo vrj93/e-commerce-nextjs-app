@@ -5,11 +5,22 @@ import "swiper/css/pagination";
 import "../css/swiper-design.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import { useMediaQuery } from "react-responsive";
 
 const ProductImages = ({ images }: any) => {
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const buttonSize = !isMobile && images && images.length > 1 ? "auto" : 0;
+  const buttonOpacity = !isMobile && images && images.length > 1 ? 1 : 0;
   return (
     <div className="flex w-full md:w-1/3 lg:w-1/3 mb-4 md:mb-0 items-center justify-center bg-blend-soft-light">
-      <button className="by-brand-swiper-prev arrow">
+      <button
+        className="product-image-swiper-prev arrow"
+        style={{
+          width: `${buttonSize}`,
+          height: `${buttonSize}`,
+          opacity: buttonOpacity,
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="52"
@@ -29,15 +40,15 @@ const ProductImages = ({ images }: any) => {
         className="w-2/3 h-full"
         style={{ marginLeft: "0px", marginRight: "0px" }}
         navigation={{
-          nextEl: ".by-brand-swiper-next",
-          prevEl: ".by-brand-swiper-prev",
+          nextEl: ".product-image-swiper-next",
+          prevEl: ".product-image-swiper-prev",
         }}
       >
         {images ? (
           images.map((image: any, index: number) => {
             return (
               <SwiperSlide key={index}>
-                <div className="w-full h-full aspect-h-1 aspect-w-1">
+                <div className="w-full h-full aspect-w-3 aspect-h-4">
                   <Image
                     src={image}
                     alt=""
@@ -51,7 +62,7 @@ const ProductImages = ({ images }: any) => {
           })
         ) : (
           <SwiperSlide>
-            <div className="w-full h-full aspect-h-1 aspect-w-1">
+            <div className="w-full h-full aspect-w-3 aspect-h-4">
               <Image
                 src="/no-image-found.webp"
                 alt=""
@@ -62,7 +73,14 @@ const ProductImages = ({ images }: any) => {
           </SwiperSlide>
         )}
       </Swiper>
-      <button className="by-brand-swiper-next arrow">
+      <button
+        className="product-image-swiper-next arrow"
+        style={{
+          width: `${buttonSize}`,
+          height: `${buttonSize}`,
+          opacity: buttonOpacity,
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="52"
