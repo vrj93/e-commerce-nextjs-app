@@ -17,12 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full bg-orange-100">
+    <html lang="en" className="bg-orange-100">
       <body className={inter.className}>
         <ReduxProvider>
           <main>
             <Navbar />
-            <div className="w-full justify-center">{children}</div>
+            <div className="w-full h-full justify-center">{children}</div>
           </main>
         </ReduxProvider>
       </body>

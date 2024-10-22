@@ -1,12 +1,15 @@
 import { useAppDispatch } from "@/store";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { NavbarContext } from "./context/navbarContext";
+import { useContext } from "react";
+import { setAuthState } from "@/store/auth/authSlice";
 
-const User2 = ({ authState, setAuthState }: any) => {
-  const router = useRouter();
+const User2 = () => {
   const dispatch = useAppDispatch();
+  const { authState } = useContext(NavbarContext);
+
   return (
-    <div className="invisible absolute right-0 z-50 flex w-56 flex-col text-center bg-gray-100 py-1 pt-2 px-4 text-gray-800 shadow-xl group-hover:visible">
+    <div className="invisible absolute right-0 z-50 flex w-56 flex-col text-center bg-gray-100 py-1 pt-2 px-4 text-gray-800 rounded-md shadow-xl group-hover:visible">
       {!authState && (
         <div className="mb-2 p-0">
           <Link
@@ -22,10 +25,7 @@ const User2 = ({ authState, setAuthState }: any) => {
           </Link>
           <span className="text-xs mb-2">
             New customer?
-            <Link
-              href='/signup'
-              className="text-blue-700 ml-1"
-            >
+            <Link href="/signup" className="text-blue-700 ml-1">
               Start here
             </Link>
           </span>

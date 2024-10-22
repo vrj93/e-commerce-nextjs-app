@@ -1,4 +1,9 @@
-const SearchBar = ({ setSearchText }: any) => {
+import { useContext } from "react";
+import { NavbarContext } from "./context/navbarContext";
+
+const SearchBar = () => {
+  const { setSearchText } = useContext(NavbarContext);
+  
   return (
     <div className="flex-grow w-auto h-full items-center">
       <input

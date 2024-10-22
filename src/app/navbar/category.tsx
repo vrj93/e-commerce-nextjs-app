@@ -1,15 +1,18 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
+import { NavbarContext } from "./context/navbarContext";
 
-const Category = ({
-  categories,
-  selectedCategory,
-  setSelectedCategory,
-}: any) => {
+const Category = () => {
+  const { categories, selectedCategory, setSelectedCategory } =
+    useContext(NavbarContext);
+    
   return (
-    <Menu as="div" className="w-auto h-full relative text-left items-center hidden md:block lg:block">
+    <Menu
+      as="div"
+      className="w-auto h-full relative text-left items-center hidden md:block lg:block"
+    >
       <Menu.Button className="flex justify-center h-full px-3 rounded-l-md bg-stone-300 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-stone-400 items-center">
         {selectedCategory.name ? selectedCategory.name : "Category"}
         <ChevronDownIcon

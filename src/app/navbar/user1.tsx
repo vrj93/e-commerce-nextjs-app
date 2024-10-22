@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { useContext } from "react";
+import { NavbarContext } from "./context/navbarContext";
 
-const User1 = ({ authState, userNameState }: any) => {
+const User1 = () => {
+  const { authState, userNameState } = useContext(NavbarContext);
+
   return (
     <Link
       href="#"
