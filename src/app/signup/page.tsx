@@ -1,15 +1,15 @@
 "use client";
 import Image from "next/image";
 import Password from "./password";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Phone from "./phone";
 import Email from "./email";
 import Name from "./name";
 import Link from "next/link";
+import { useMediaQuery } from "react-responsive";
 
 const Page = () => {
-  const router = useRouter();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   const [user, setUser] = useState<{
     firstName: string;
     lastName: string;
@@ -61,20 +61,19 @@ const Page = () => {
   }, [user, userError]);
 
   return (
-    <div className="flex w-2/3 flex-1 ml-52 mr-auto px-4 py-4 sm:px-6 lg:px-8 justify-center items-center">
-      <div className="flex flex-col w-full h-auto mx-auto mt-40 max-w-xs sm:max-w-sm lg:max-w-md justify-center self-start">
+    <div className="w-3/4 flex flex-col md:flex-row lg:flex-row mx-auto mt-4 space-y-4 justify-center items-center">
+      <div className="w-full md:w-1/2 lg:w-1/2 md:h-1/2 lg:h-1/2 flex flex-col mt-4 md:mt-40 lg:mt-40 self-start items-center">
         <Image
           src="/amzlogo2.svg"
-          className="h-15 w-auto md:h-24 sm:h-16"
+          className="object-cover object-center"
           alt="AMZ Logo"
-          width={0}
-          height={0}
+          width={isMobile ? 50 : 100}
+          height={isMobile ? 50 : 100}
+          priority={true}
         />
-        <h2 className="mt-4 text-xl text-center font-bold md:text-3xl sm:text-2xl sm:leading-9 text-gray-900">
-          Create Account
-        </h2>
+        <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-gray-900">Create Account</h2>
       </div>
-      <div className="w-full mx-auto mt-6 max-w-xs sm:max-w-sm lg:max-w-md justify-center">
+      <div className="w-full md:w-1/2 lg:w-1/2 md:pr-32 lg:pr-32">
         <form
           className="space-y-6"
           action="#"
@@ -101,17 +100,17 @@ const Page = () => {
             userError={userError}
             setUserError={setUserError}
           />
-          <div className="flex w-full justify-between items-center">
+          <div className="flex justify-between items-center">
             <button
               type="submit"
-              className={`flex w-1/2 justify-center rounded-full bg-yellow-500 px-3 py-2 text-md font-semibold leading-6 text-white shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 ${
+              className={`justify-center rounded-full bg-yellow-500 px-3 py-2 text-md font-semibold leading-6 text-white shadow-sm hover:bg-yellow-600 ${
                 !signUpEnabled && "opacity-50"
               }`}
               disabled={!signUpEnabled}
             >
               Create Account
             </button>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 max-w-40 md:max-w-full lg:max-w-full">
               Already a member?{" "}
               <Link
                 href="/signin"
