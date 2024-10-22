@@ -7,21 +7,32 @@ import Email from "./email";
 import Name from "./name";
 import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
+import { handleSignup } from "./utils/handleSignup";
+import { useRouter } from "next/navigation";
+
+interface SignupData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string | null;
+  password: string;
+}
 
 const Page = () => {
+  const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [user, setUser] = useState<{
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    password: string;
+    firstName: string | null;
+    lastName: string | null;
+    phone: string | null;
+    email: string | null;
+    password: string | null;
   }>({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    password: "",
+    firstName: null,
+    lastName: null,
+    phone: null,
+    email: null,
+    password: null,
   });
   const [userError, setUserError] = useState<{
     firstNameError: boolean;
@@ -40,14 +51,29 @@ const Page = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (user.firstName && user.lastName && user.phone && user.password) {
+      const validUser: SignupData = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        email: user.email,
+        password: user.password,
+      };
+      const response = await handleSignup(validUser);
+
+      if (response.flag) {
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        router.push('account/verify/phone');
+      }
+    }
   };
 
   useEffect(() => {
     if (
-      user.firstName !== "" &&
-      user.lastName !== "" &&
-      user.phone !== "" &&
-      user.password !== "" &&
+      user.firstName &&
+      user.lastName &&
+      user.phone &&
+      user.password &&
       !userError.firstNameError &&
       !userError.lastNameError &&
       !userError.phoneError &&
@@ -73,7 +99,7 @@ const Page = () => {
         />
         <h2 className="text-xl md:text-3xl lg:text-3xl font-bold text-gray-900">Create Account</h2>
       </div>
-      <div className="w-full md:w-1/2 lg:w-1/2 md:pr-32 lg:pr-32">
+      <div className="w-full md:w-1/2 lg:w-1/2 md:pr-8 lg:pr-32">
         <form
           className="space-y-6"
           action="#"
