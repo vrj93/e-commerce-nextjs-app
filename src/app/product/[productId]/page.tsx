@@ -26,7 +26,7 @@ const Product = ({ params }: { params: { productId: any } }) => {
 
   return (
     <>
-      <div className="container mx-auto px-4">
+      <div className="m-1 md:m-2">
         <div className="flex flex-col md:flex-row w-full p-3 md:p-6 bg-white">
           <ProductImages images={product.image} />
           <ProductInfo
