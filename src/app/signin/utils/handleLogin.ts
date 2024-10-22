@@ -1,5 +1,5 @@
 const handleLogin = async (
-  user: any,
+  user: { phone: string | null, email: string | null },
   password: string,
   setAuthState: any,
   setUserName: any,

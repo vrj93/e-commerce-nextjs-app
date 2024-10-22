@@ -13,9 +13,9 @@ import Link from "next/link";
 const Page = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [user, setUser] = useState<{ phone: string; email: string }>({
-    phone: "",
-    email: "",
+  const [user, setUser] = useState<{ phone: string | null; email: string | null }>({
+    phone: null,
+    email: null,
   });
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState(false);
