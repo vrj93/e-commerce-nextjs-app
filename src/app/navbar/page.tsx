@@ -12,6 +12,7 @@ import Cart from "./cart";
 import fetchLocation from "./utils/fetchLocation";
 import fetchCategories from "./utils/fetchCategories";
 import { NavbarContext, NavbarContextProvider } from "./context/navbarContext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const Navbar = () => {
 
   const handleSearch = () => {
     if (!isMobile && selectedCategory.slug === null) {
-      alert("Please select Category!");
+      toast.error("Please select Category.");
       return;
     }
     const searchStr = `${

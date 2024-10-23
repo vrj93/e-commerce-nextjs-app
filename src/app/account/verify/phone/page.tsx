@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 import { processPhoneVerification } from "../utils/verifyOtp";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface User {
   id: number;
@@ -24,9 +25,10 @@ const Page = () => {
     e.preventDefault();
     const response = await processPhoneVerification(user.id, Number(otp));
     if (response.flag) {
+      toast.success(response.msg);
       router.push("/signin");
     } else {
-      alert(response.msg);
+      toast.error("Invalid OTP, please try again.");
     }
   };
 

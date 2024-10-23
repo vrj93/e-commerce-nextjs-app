@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/store/redux-provider";
 import Navbar from "./navbar/page";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +25,7 @@ export default function RootLayout({
           <main>
             <Navbar />
             <div className="w-full h-full justify-center">{children}</div>
+            <ToastContainer position="top-center" autoClose={3500} />
           </main>
         </ReduxProvider>
       </body>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
 import { handleSignup } from "./utils/handleSignup";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface SignupData {
   firstName: string;
@@ -63,7 +64,10 @@ const Page = () => {
 
       if (response.flag) {
         sessionStorage.setItem('user', JSON.stringify(response.data));
+        toast.success(response.flag);
         router.push('account/verify/phone');
+      } else {
+        toast.error("Something went wrong, please try again.");
       }
     }
   };

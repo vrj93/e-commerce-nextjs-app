@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 const handleLogin = async (
   user: { phone: string | null, email: string | null },
   password: string,
@@ -20,9 +22,10 @@ const handleLogin = async (
   if (response.flag) {
     dispatch(setAuthState(true));
     dispatch(setUserName(response.data.name));
+    toast.success(response.msg);
     router.push("/");
   } else {
-    alert("Username or Password is incorrect!");
+    toast.error("Username or Password is incorrect.");
   }
 };
 
